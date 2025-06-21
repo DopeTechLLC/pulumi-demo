@@ -21,21 +21,22 @@ const publicAccessBlock = new aws.s3.BucketPublicAccessBlock("public-access-bloc
     blockPublicAcls: false,
 });
 
-const siteDir = "www"; // directory for content files
-
-// For each file in the directory, create an S3 object stored in `siteBucket`
+// For each file in the "www" directory, create an S3 object stored in `siteBucket`
+const siteDir = "www";
 for (const item of fs.readdirSync(siteDir)) {
     const filePath = require("path").join(siteDir, item);
     const siteObject = new aws.s3.BucketObject(item, {
-        bucket: siteBucket,                               // reference the s3.Bucket object
-        source: new pulumi.asset.FileAsset(filePath),     // use FileAsset to point to a file
-        contentType: mime.getType(filePath) || undefined, // set the MIME type of the file
+        bucket: siteBucket,
+        source: new pulumi.asset.FileAsset(filePath),
+        contentType: mime.getType(filePath) || undefined,
+        tags: {
+            "DataClassification": "public",
+        },
     });
 }
 
-// Set the access policy for the bucket so all objects are readable
 const bucketPolicy = new aws.s3.BucketPolicy("bucketPolicy", {
-    bucket: siteBucket.id, // refer to the bucket created earlier
+    bucket: siteBucket.id,
     policy: pulumi.jsonStringify({
         Version: "2012-10-17",
         Statement: [{
@@ -45,7 +46,7 @@ const bucketPolicy = new aws.s3.BucketPolicy("bucketPolicy", {
                 "s3:GetObject",
             ],
             Resource: [
-                pulumi.interpolate `${siteBucket.arn}/*`,
+                pulumi.interpolate`${siteBucket.arn}/*`,
             ],
         }],
     }),
