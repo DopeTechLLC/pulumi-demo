@@ -9,10 +9,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write    # Required for OIDC!
+      id-token: write
       contents: read
-    env:
-      PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
 
     steps:
       - name: Configure AWS credentials via OIDC
@@ -37,11 +35,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Select Pulumi stack
-        run: pulumi stack select dev
-
-      - name: Pulumi Up (Deploy)
-        uses: pulumi/actions@v5
+      - uses: pulumi/actions@v6
         with:
           command: up
-          args: --yes
+          stack-name: zamranshahbaz-org/dev
+          refresh: true
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
