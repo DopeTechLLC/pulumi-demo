@@ -16,7 +16,7 @@ jobs:
       - name: Configure AWS credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::564818402695:role/CICD-GitHubActions
+          role-to-assume: arn:aws:iam::564818402695:role/github-pipeline-role
           aws-region: us-east-1
 
       - name: Use Node.js 22.x

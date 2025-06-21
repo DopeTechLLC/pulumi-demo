@@ -4,9 +4,6 @@ import * as fs from "fs";
 import * as mime from "mime";
 
 const siteBucket = new aws.s3.Bucket(`pulumi-demo-${pulumi.getStack()}`, {
-    tags: {
-        env: "dev"
-    },
     website: {
         indexDocument: "index.html",
     },

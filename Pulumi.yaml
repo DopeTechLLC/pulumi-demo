@@ -1,3 +1,5 @@
 name: pulumi-demo
 runtime: nodejs
 description: Pulumi Demo
+config:
+  aws:defaultTags: '{"tags": {"project": "pulumi-demo"}}'
