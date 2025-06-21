@@ -19,11 +19,6 @@ jobs:
           role-to-assume: arn:aws:iam::564818402695:role/CICD-GitHubActions
           aws-region: us-east-1
 
-      - name: Pulumi Login
-        uses: pulumi/actions@v5
-        with:
-          command: login
-
       - name: Use Node.js 22.x
         uses: actions/setup-node@v4
         with:
