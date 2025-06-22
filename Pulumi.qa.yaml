@@ -1,2 +1,2 @@
 config:
-  aws:defaultTags: '{"tags": {"env": "qa"}}'
+  aws:defaultTags: '{"tags": {"project": "pulumi-demo", "env": "qa"}}'
