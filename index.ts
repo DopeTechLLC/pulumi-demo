@@ -3,10 +3,17 @@ import * as pulumi from "@pulumi/pulumi";
 import * as fs from "fs";
 import * as mime from "mime";
 
+const publicDataTag = {
+    "DataClassification": "public",
+}
+
 const siteBucket = new aws.s3.Bucket(`pulumi-demo-${pulumi.getStack()}`, {
     website: {
         indexDocument: "index.html",
     },
+    tags: { 
+        ...publicDataTag 
+    }
 });
 
 const siteBucketWebsiteConfig = new aws.s3.BucketWebsiteConfigurationV2("s3-website-bucket-config", {
@@ -29,9 +36,9 @@ for (const item of fs.readdirSync(siteDir)) {
         bucket: siteBucket,
         source: new pulumi.asset.FileAsset(filePath),
         contentType: mime.getType(filePath) || undefined,
-        tags: {
-            "DataClassification": "public",
-        },
+        tags: { 
+            ...publicDataTag 
+        }
     });
 }
 
